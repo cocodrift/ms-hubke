@@ -1,0 +1,178 @@
+/* =========================================================
+   M'S HUB KE — HOMEPAGE (hoo.be-style link page). UI only.
+   ========================================================= */
+:root {
+  --lk-text: #3b4256;
+  --lk-dark: #111827;
+  --lk-muted: #6b7280;
+  --lk-border: #e5e7eb;
+  --lk-soft: #f3f4f6;
+  --lk-radius: 24px;
+}
+
+* { box-sizing: border-box; }
+
+body.lk-page {
+  margin: 0;
+  background: #fff;
+  color: var(--lk-dark);
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.lk-page a { color: inherit; text-decoration: none; }
+.lk-page img { display: block; max-width: 100%; }
+
+.skip-link { position: absolute; left: -999px; top: 0; background: #111; color: #fff; padding: 8px 12px; z-index: 10; }
+.skip-link:focus { left: 8px; top: 8px; }
+
+.lk-wrap { width: 100%; max-width: 640px; margin: 0 auto; padding: 36px 18px 40px; }
+
+/* ---------- Profile ---------- */
+.lk-profile { text-align: center; }
+
+.lk-avatar {
+  position: relative;
+  width: 192px; height: 192px;
+  margin: 0 auto 22px;
+  padding: 7px;
+  border-radius: 50%;
+  border: 2px solid #dfe2e8;
+  background: #fff;
+}
+.lk-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.lk-verified { position: absolute; right: 4px; bottom: 6px; width: 42px; height: 42px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.2)); }
+
+.lk-name { margin: 0; font-size: 1.7rem; font-weight: 600; color: var(--lk-text); letter-spacing: -0.01em; }
+.lk-tagline { margin: 8px 0 0; color: var(--lk-muted); font-size: 1rem; line-height: 1.5; }
+
+/* ---------- Social icons ---------- */
+.lk-socials {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+  margin: 22px auto 26px; padding: 0; list-style: none; max-width: 460px;
+}
+.lk-socials a {
+  display: grid; place-items: center;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: #000; color: #fff;
+  transition: transform .2s, opacity .2s;
+}
+.lk-socials a:hover { transform: translateY(-2px); opacity: .85; }
+.lk-socials svg { width: 28px; height: 28px; fill: currentColor; }
+
+/* ---------- Section label ---------- */
+.lk-label {
+  margin: 30px 4px 12px;
+  font-size: .78rem; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--lk-muted);
+}
+
+.lk-stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------- Row card (thumbnail left, title, icon right) ---------- */
+.lk-row {
+  position: relative;
+  display: flex; align-items: center; gap: 20px;
+  min-height: 140px;
+  padding: 16px 56px 16px 16px;
+  background: #fff;
+  border: 1px solid var(--lk-border);
+  border-radius: var(--lk-radius);
+  transition: box-shadow .2s, transform .2s;
+}
+.lk-row:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(17,24,39,.08); }
+.lk-row-compact { min-height: 92px; }
+.lk-row-compact .lk-thumb { width: 64px; height: 64px; font-size: 1.6rem; border-radius: 16px; }
+
+.lk-thumb {
+  flex: none;
+  width: 160px; height: 106px;
+  border-radius: 18px; overflow: hidden;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, #111827, #4b5563);
+  color: #fff; font-size: 2.4rem;
+}
+.lk-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lk-row-title { font-size: .95rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lk-dark); line-height: 1.35; }
+.lk-row-sub { display: block; margin-top: 3px; font-size: .78rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--lk-muted); }
+.lk-row-icon { position: absolute; top: 16px; right: 18px; font-size: 1.2rem; color: var(--lk-dark); }
+
+/* ---------- Big image card (title overlaid) ---------- */
+.lk-big {
+  position: relative; display: block;
+  aspect-ratio: 16 / 11;
+  border-radius: var(--lk-radius); overflow: hidden;
+  background: linear-gradient(135deg, #111827, #4b5563);
+  border: 1px solid var(--lk-border);
+  transition: transform .2s, box-shadow .2s;
+}
+.lk-big:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(17,24,39,.15); }
+.lk-big > img { width: 100%; height: 100%; object-fit: cover; }
+.lk-big::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 45%, rgba(0,0,0,.72)); }
+.lk-big-text { position: absolute; z-index: 2; left: 22px; right: 22px; bottom: 20px; color: #fff; }
+.lk-big-cat { font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .85; }
+.lk-big-title { margin: 4px 0 0; font-size: 1.15rem; font-weight: 600; line-height: 1.3; color: #fff; }
+.lk-big-meta { margin-top: 4px; font-size: .78rem; opacity: .8; }
+.lk-big-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.7); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+
+/* badge (top-right circle) */
+.lk-badge {
+  position: absolute; z-index: 3; top: 14px; right: 14px;
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(0,0,0,.35); color: #fff; font-size: 1.1rem;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.lk-badge-light { background: rgba(156,163,175,.75); }
+
+/* ---------- 2-column tiles ---------- */
+.lk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.lk-tile {
+  position: relative; display: flex; flex-direction: column;
+  background: #fff; border: 1px solid var(--lk-border);
+  border-radius: var(--lk-radius); overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.lk-tile:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(17,24,39,.08); }
+.lk-tile-media { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #111827, #4b5563); display: grid; place-items: center; color: #fff; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.lk-tile-media img { width: 100%; height: 100%; object-fit: cover; }
+.lk-tile-body { padding: 16px 16px 20px; }
+.lk-tile-title { margin: 0; font-size: .85rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--lk-text); line-height: 1.45; }
+.lk-tile-sub { margin: 8px 0 0; font-size: .8rem; color: var(--lk-muted); line-height: 1.5; font-weight: 400; text-transform: none; letter-spacing: 0; }
+.lk-tile-num { font-size: .78rem; font-weight: 600; color: var(--lk-muted); letter-spacing: .1em; }
+
+/* ---------- Text card ---------- */
+.lk-card {
+  background: #fff; border: 1px solid var(--lk-border);
+  border-radius: var(--lk-radius); padding: 24px 22px;
+}
+.lk-card h2 { margin: 0 0 12px; font-size: 1.25rem; font-weight: 600; color: var(--lk-text); }
+.lk-card p { margin: 0 0 12px; color: #4b5563; font-size: .95rem; line-height: 1.7; }
+.lk-card p:last-child { margin-bottom: 0; }
+
+.lk-project-type { font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--lk-muted); }
+.lk-project h3 { margin: 6px 0 8px; font-size: 1.1rem; font-weight: 600; color: var(--lk-text); }
+.lk-project p { margin: 0 0 14px; color: #4b5563; font-size: .9rem; line-height: 1.6; }
+.lk-pill-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 42px; padding: 0 20px; border-radius: 999px;
+  background: #000; color: #fff; font-size: .85rem; font-weight: 600;
+  transition: opacity .2s;
+}
+.lk-pill-btn:hover { opacity: .8; }
+
+.lk-qr { padding: 18px; text-align: center; }
+.lk-qr img { width: 100%; border-radius: 14px; }
+.lk-qr p { margin: 10px 0 0; font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--lk-text); }
+
+.lk-empty { padding: 28px 20px; text-align: center; border: 1px dashed #d1d5db; border-radius: var(--lk-radius); }
+.lk-empty h2 { margin: 0 0 6px; font-size: 1.1rem; color: var(--lk-text); }
+.lk-empty p { margin: 0 0 16px; color: var(--lk-muted); font-size: .9rem; }
+
+.lk-footer { margin-top: 40px; text-align: center; color: var(--lk-muted); font-size: .8rem; }
+
+@media (max-width: 420px) {
+  .lk-thumb { width: 120px; height: 90px; }
+  .lk-socials a { width: 54px; height: 54px; }
+}
+@media (min-width: 700px) { .lk-wrap { padding-top: 56px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
