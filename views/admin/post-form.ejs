@@ -11,7 +11,7 @@
   >
 
   <title>
-    <%= post ? 'Edit Article' : 'New Article' %>
+    <%= post && post._id ? 'Edit Article' : 'New Article' %>
     — M's Hub
   </title>
 
@@ -173,9 +173,15 @@
   <div class="editor">
 
     <h1>
-      <%= post ? 'Edit Article' : 'New Article' %>
+      <%= post && post._id ? 'Edit Article' : 'New Article' %>
     </h1>
 
+
+    <p class="help" style="margin: 0 0 22px;">
+      Each article can be text only, an image only, a video only, or any
+      mix. Fill in only what you need — a title and category are required,
+      plus at least one of text, image URL or video URL.
+    </p>
 
     <% if (error) { %>
 
@@ -188,7 +194,7 @@
 
     <form
       method="POST"
-      action="<%= post
+      action="<%= post && post._id
         ? '/admin/posts/' + post._id
         : '/admin/posts' %>"
     >
@@ -319,7 +325,7 @@
       <div class="field">
 
         <label for="content">
-          Article
+          Text or caption (optional)
         </label>
 
         <textarea
@@ -336,12 +342,12 @@ Write your content...
 ## Second section
 
 More useful information..."
-          required
         ><%= post ? post.content : '' %></textarea>
 
         <small class="help">
-          Write using Markdown. Use # for headings,
-          **bold**, *italic*, lists and links.
+          Optional. Write using Markdown. Use # for headings,
+          **bold**, *italic*, lists and links. For a photo or video
+          post, a short caption is enough.
         </small>
 
       </div>
@@ -415,30 +421,6 @@ More useful information..."
       </div>
 
 
-<div class="form-group">
-    <label for="videoTitle">Video Title</label>
-    <input
-        type="text"
-        id="videoTitle"
-        name="videoTitle"
-        value="<%= post?.videoTitle || '' %>"
-        placeholder="Video title"
-    >
-</div>
-
-<div class="form-group">
-    <label for="videoUrl">Video URL</label>
-    <input
-        type="url"
-        id="videoUrl"
-        name="videoUrl"
-        value="<%= post?.videoUrl || '' %>"
-        placeholder="https://www.youtube.com/watch?v=..."
-    >
-    <small>
-        Add a YouTube video URL to display a video on the article.
-    </small>
-</div>
 
       <div class="grid">
 
@@ -536,7 +518,7 @@ More useful information..."
           type="submit"
           class="publish"
         >
-          <%= post ? 'Save changes' : 'Save article' %>
+          <%= post && post._id ? 'Save changes' : 'Save article' %>
         </button>
 
 
