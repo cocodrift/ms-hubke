@@ -23,9 +23,10 @@ const PostSchema = new mongoose.Schema(
       maxlength: 320
     },
 
+    // Optional: an article can be an image or a video on its own
     content: {
       type: String,
-      required: true
+      default: ''
     },
 
     category: {
