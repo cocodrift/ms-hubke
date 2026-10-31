@@ -2,7 +2,7 @@ import express from 'express';
 import crypto from 'crypto';
 import Post from '../models/post.js';
 import connectDB from '../config/db.js';
-import { marked } = from 'marked';
+import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 
 const router = express.Router();
