@@ -88,7 +88,7 @@
             <span class="lk-big-title" style="display:block"><%= featuredPost.title %></span>
             <span class="lk-big-meta" style="display:block">
               <%= featuredPost.author || "M's Hub KE" %>
-              <% if (featuredPost.publishedAt) { %>
+           
                 •
                 <time><%= new Date(featuredPost.publishedAt).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) %></time>
               <% } %>
