@@ -63,40 +63,42 @@
     </header>
 
 
-    <!-- ================= ARTICLES ================= -->
-    <div class="lk-stack">
+   <!-- ================= ARTICLES ================= -->
+<div class="lk-stack">
 
-      <a href="/learn" class="lk-row">
-        <span class="lk-thumb">📚</span>
-        <span class="lk-row-title">All articles
-          <span class="lk-row-sub">Guides, ideas &amp; stories</span>
-        </span>
-        <span class="lk-row-icon">↗</span>
-      </a>
+  <a href="/learn" class="lk-row">
+    <span class="lk-thumb">📚</span>
+    <span class="lk-row-title">All articles
+      <span class="lk-row-sub">Guides, ideas &amp; stories</span>
+    </span>
+    <span class="lk-row-icon">↗</span>
+  </a>
 
-      <% if (featuredPost) { %>
+  <% if (featuredPost) { %>
 
-        <a href="/learn/<%= featuredPost.slug %>" class="lk-big">
-          <% if (featuredPost.featuredImage) { %>
-            <img src="<%= featuredPost.featuredImage %>" alt="<%= featuredPost.title %>" loading="eager" />
-          <% } else { %>
-            <span class="lk-big-placeholder"><%= featuredPost.category %></span>
+    <a href="/learn/<%= featuredPost.slug %>" class="lk-big">
+      <% if (featuredPost.featuredImage) { %>
+        <img src="<%= featuredPost.featuredImage %>" alt="<%= featuredPost.title %>" loading="eager" />
+      <% } else { %>
+        <span class="lk-big-placeholder"><%= featuredPost.category %></span>
+      <% } %>
+      <span class="lk-badge">↗</span>
+      <span class="lk-big-text">
+        <span class="lk-big-cat"><%= featuredPost.category %></span>
+        <span class="lk-big-title" style="display:block"><%= featuredPost.title %></span>
+        <span class="lk-big-meta" style="display:block">
+          <%= featuredPost.author || "M's Hub KE" %>
+          <% if (featuredPost.publishedAt) { %>
+            •
+            <time><%= new Date(featuredPost.publishedAt).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) %></time>
           <% } %>
-          <span class="lk-badge">↗</span>
-          <span class="lk-big-text">
-            <span class="lk-big-cat"><%= featuredPost.category %></span>
-            <span class="lk-big-title" style="display:block"><%= featuredPost.title %></span>
-            <span class="lk-big-meta" style="display:block">
-              <%= featuredPost.author || "M's Hub KE" %>
-           
-                •
-                <time><%= new Date(featuredPost.publishedAt).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) %></time>
-              <% } %>
-            </span>
-          </span>
-        </a>
+        </span>
+      </span>
+    </a>
 
-      </div>
+  <% } %>
+
+</div>
 
 
     <!-- ================= CATEGORIES ================= -->
