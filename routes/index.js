@@ -205,6 +205,67 @@ function normalizeVideoUrl(url) {
 
 
 // --------------------------------------------------
+// Admin form helpers
+// --------------------------------------------------
+
+// Always returns a trimmed string. If a field arrives more than once
+// (an array), the first non-empty value is used instead of crashing.
+function text(value) {
+  if (Array.isArray(value)) {
+    value = value.find(v => typeof v === 'string' && v.trim()) ?? '';
+  }
+
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+
+function readPostFields(body = {}) {
+  const title = text(body.title);
+  const excerpt = text(body.excerpt);
+
+  return {
+    title,
+    slug: text(body.slug),
+    excerpt,
+    content: text(body.content),
+    category: text(body.category),
+
+    tags: text(body.tags)
+      .split(',')
+      .map(tag => tag.trim().toLowerCase())
+      .filter(Boolean),
+
+    featuredImage: text(body.featuredImage),
+
+    videoTitle: text(body.videoTitle),
+    videoUrl: normalizeVideoUrl(text(body.videoUrl)),
+
+    author: text(body.author) || 'M’s Hub KE',
+
+    seoTitle: text(body.seoTitle) || title,
+    seoDescription: text(body.seoDescription) || excerpt,
+
+    status: text(body.status) === 'published' ? 'published' : 'draft'
+  };
+}
+
+
+// An article can be text only, an image only, a video only, or any mix.
+// It only needs a title, a category and at least one of the three.
+function validatePostFields(fields) {
+  if (!fields.title || !fields.category) {
+    return 'Title and category are required.';
+  }
+
+  if (!fields.content && !fields.featuredImage && !fields.videoUrl) {
+    return 'Add at least one of: text, an image URL or a video URL.';
+  }
+
+  return null;
+}
+
+
+// --------------------------------------------------
 // Existing site routes
 // --------------------------------------------------
 
@@ -420,71 +481,28 @@ router.post('/admin/posts', requireAdmin, async (req, res, next) => {
   try {
     await connectDB();
 
-    const {
-      title,
-      slug,
-      excerpt,
-      content,
-      category,
-      tags,
-      featuredImage,
-      videoTitle,
-      videoUrl,
-      author,
-      seoTitle,
-      seoDescription,
-      status
-    } = req.body;
+    const fields = readPostFields(req.body);
+    const error = validatePostFields(fields);
 
-    if (!title || !content || !category) {
+    if (error) {
       return res.status(400).render('admin/post-form', {
-        post: req.body,
-        error: 'Title, category and content are required.'
+        post: { ...fields, tags: fields.tags.join(', ') },
+        error
       });
     }
 
-    let finalSlug = slugify(slug || title);
+    let finalSlug = slugify(fields.slug || fields.title) || `post-${Date.now()}`;
 
-    const existing = await Post.findOne({
-      slug: finalSlug
-    });
+    const existing = await Post.findOne({ slug: finalSlug });
 
     if (existing) {
       finalSlug = `${finalSlug}-${Date.now()}`;
     }
 
     const post = new Post({
-      title,
+      ...fields,
       slug: finalSlug,
-      excerpt,
-      content,
-      category,
-
-      tags: tags
-        ? tags
-            .split(',')
-            .map(tag => tag.trim().toLowerCase())
-            .filter(Boolean)
-        : [],
-
-      featuredImage,
-
-      videoTitle: videoTitle?.trim() || '',
-      videoUrl: normalizeVideoUrl(videoUrl),
-
-      author: author || 'M’s Hub KE',
-
-      seoTitle: seoTitle || title,
-      seoDescription: seoDescription || excerpt,
-
-      status: status === 'published'
-        ? 'published'
-        : 'draft',
-
-      publishedAt:
-        status === 'published'
-          ? new Date()
-          : undefined
+      publishedAt: fields.status === 'published' ? new Date() : undefined
     });
 
     await post.save();
@@ -538,21 +556,19 @@ router.post(
     try {
       await connectDB();
 
-      const {
-        title,
-        slug,
-        excerpt,
-        content,
-        category,
-        tags,
-        featuredImage,
-        videoTitle,
-        videoUrl,
-        author,
-        seoTitle,
-        seoDescription,
-        status
-      } = req.body;
+      const fields = readPostFields(req.body);
+      const error = validatePostFields(fields);
+
+      if (error) {
+        return res.status(400).render('admin/post-form', {
+          post: {
+            ...fields,
+            tags: fields.tags.join(', '),
+            _id: req.params.id
+          },
+          error
+        });
+      }
 
       const post = await Post.findById(req.params.id);
 
@@ -560,39 +576,24 @@ router.post(
         return res.status(404).send('Post not found.');
       }
 
-      post.title = title;
-      post.slug = slugify(slug || title);
-      post.excerpt = excerpt;
-      post.content = content;
-      post.category = category;
+      post.title = fields.title;
+      post.slug = slugify(fields.slug || fields.title) || post.slug;
+      post.excerpt = fields.excerpt;
+      post.content = fields.content;
+      post.category = fields.category;
+      post.tags = fields.tags;
+      post.featuredImage = fields.featuredImage;
+      post.videoTitle = fields.videoTitle;
+      post.videoUrl = fields.videoUrl;
+      post.author = fields.author;
+      post.seoTitle = fields.seoTitle;
+      post.seoDescription = fields.seoDescription;
 
-      post.tags = tags
-        ? tags
-            .split(',')
-            .map(tag => tag.trim().toLowerCase())
-            .filter(Boolean)
-        : [];
-
-      post.featuredImage = featuredImage;
-
-      post.videoTitle = videoTitle?.trim() || '';
-      post.videoUrl = normalizeVideoUrl(videoUrl);
-
-      post.author = author || 'M’s Hub KE';
-      post.seoTitle = seoTitle || title;
-      post.seoDescription = seoDescription || excerpt;
-
-      if (
-        status === 'published' &&
-        post.status !== 'published'
-      ) {
+      if (fields.status === 'published' && post.status !== 'published') {
         post.publishedAt = new Date();
       }
 
-      post.status =
-        status === 'published'
-          ? 'published'
-          : 'draft';
+      post.status = fields.status;
 
       await post.save();
 
