@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const PostSchema = new mongoose.Schema(
   {
@@ -93,7 +93,6 @@ const PostSchema = new mongoose.Schema(
   }
 );
 
-
 PostSchema.index({
   status: 1,
   publishedAt: -1
@@ -104,5 +103,4 @@ PostSchema.index({
   status: 1
 });
 
-
-module.exports = mongoose.model('Post', PostSchema);
+export default mongoose.model('Post', PostSchema);
