@@ -1,9 +1,9 @@
-const express = require('express');
-const crypto = require('crypto');
-const Post = require('../models/post');
-const connectDB = require('../config/db');
-const { marked } = require('marked');
-const sanitizeHtml = require('sanitize-html');
+import express from 'express';
+import crypto from 'crypto';
+import Post from '../models/post.js';
+import connectDB from '../config/db.js';
+import { marked } = from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 const router = express.Router();
 
@@ -640,4 +640,4 @@ router.use((err, req, res, next) => {
 });
 
 
-module.exports = router;
+export default router;
