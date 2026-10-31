@@ -204,11 +204,15 @@
     <% } %>
 
 
-    <div class="article-content">
+    <% if (articleHtml && articleHtml.trim()) { %>
 
-      <%- articleHtml %>
+      <div class="article-content">
 
-    </div>
+        <%- articleHtml %>
+
+      </div>
+
+    <% } %>
 
 
     <% if (post.videoUrl) { %>
